@@ -14,6 +14,17 @@ export default {
       secret: true
     }
   },
+  methods: {
+    async respond(data) {
+      return await this.http.respond({
+        status: 200,
+        body: data,
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+    }
+  },
   async run(event) {
     const signature = event.headers['X-Signature-Ed25519'];
     const timestamp = event.headers['X-Signature-Timestamp'];
