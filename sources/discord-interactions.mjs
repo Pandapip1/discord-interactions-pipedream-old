@@ -58,7 +58,11 @@ export default {
         },
       });
     }
-    this.$emit(event.body, {
+    
+    const emittedEvent = event.body;
+    emittedEvent.respond = this.respond;
+    
+    return this.$emit(emittedEvent, {
       id: signature,
       ts: timestamp
     });
