@@ -1,6 +1,6 @@
-const nacl = require('tweetnacl');
+import nacl from "tweetnacl";
 
-module.exports = {
+export default {
   name: "discord-interactions",
   version: "0.0.1",
   props: {
