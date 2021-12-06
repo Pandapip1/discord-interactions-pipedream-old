@@ -26,11 +26,16 @@ export default {
     }
   },
   async run(event) {
-    const signature = event.headers['X-Signature-Ed25519'];
-    const timestamp = event.headers['X-Signature-Timestamp'];
-    const body = JSON.stringify(event.body);
+    function getParameterCaseInsensitive(object, key) {
+      return object[Object.keys(object)
+        .find(k => k.toLowerCase() === key.toLowerCase())
+      ];
+    }
+    const signature = getParameterCaseInsensitive(event.headers, 'X-Signature-Ed25519');
+    const timestamp = getParameterCaseInsensitive(event.headers, 'X-Signature-Timestamp');
+    const body = event.bodyRaw;
 
-    const isVerified = nacl.sign.detached.verify(
+    const isVerified = signature && timestamp && body && nacl.sign.detached.verify(
       Buffer.from(timestamp + body),
       Buffer.from(signature, 'hex'),
       Buffer.from(this.pubKey, 'hex')
